@@ -1,13 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
+import Card from './components/Card'
 
 
 class App extends React.Component {
   constructor() {
     super()
     this.state = {
-      data: {}
+      data: []
     }
 
   }
@@ -19,18 +20,33 @@ class App extends React.Component {
       headers: { Authorization: `Basic ${key}` }
     })
       .then(res => {
-        this.setState({ data: res.data })
-        console.log(res)
-      }
-      )
+        this.setState({ data: res.data.results })
+      })
       .catch(err => console.log(err))
   }
 
   render() {
+    console.log(this.state.data)
     return (
       <main>
 
         <h1>hello World</h1>
+        {this.state.data.map(job =>
+          <div key={job.jobId}>
+            <Card
+              key={job.jobId}
+              jobTitle={job.jobTitle}
+              employerName={job.employerName}
+              locationName={job.locationName}
+              minimumSalary={job.minimumSalary}
+              maximumSalary={job.maximumSalary}
+              currency={job.currency}
+              expirationDate={job.expirationDate}
+              jobDescription={job.jobDescription}
+            />
+
+          </div>
+        )}
 
       </main>
     )
