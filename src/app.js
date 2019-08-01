@@ -30,28 +30,29 @@ class App extends React.Component {
   render() {
     console.log(this.state.data)
     return (
-      <main>
-
-        <h1>hello World</h1>
+      <section className="section">
         <Input />
-        {this.state.data.map(job =>
-          <div key={job.jobId}>
-            <Card
-              key={job.jobId}
-              jobTitle={job.jobTitle}
-              employerName={job.employerName}
-              locationName={job.locationName}
-              minimumSalary={job.minimumSalary}
-              maximumSalary={job.maximumSalary}
-              currency={job.currency}
-              expirationDate={job.expirationDate}
-              jobDescription={job.jobDescription}
-            />
+        <div className="container">
+          <div className="columns is-multiline">
+            {this.state.data.map(job =>
+              <div key={job.jobId} className="column is-full-tablet is-half-desktop">
 
+                <Card
+                  key={job.jobId}
+                  jobTitle={job.jobTitle}
+                  employerName={job.employerName}
+                  locationName={job.locationName}
+                  minimumSalary={job.minimumSalary}
+                  maximumSalary={job.maximumSalary}
+                  currency={job.currency}
+                  expirationDate={job.expirationDate}
+                  jobDescription={job.jobDescription}
+                />
+              </div>
+            )}
           </div>
-        )}
-
-      </main>
+        </div>
+      </section>
     )
   }
 }

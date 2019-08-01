@@ -1,28 +1,28 @@
 import React from 'react'
-class Card extends React.Component {
+import '../style.scss'
+class Card extends
+  React.Component {
   constructor(props) {
     super(props)
     this.state = {
       data: {}
     }
-
   }
   render() {
     return (
       <div className="card">
         <div className="card-header">
-          <div className="card-header-title is-2">{this.props.jobTitle}</div>
-          <div className="title is-4">{this.props.employerName}</div>
-          <div className="subtitle is-6">Location: {this.props.locationName}</div>
+          <p className="card-header-title title is-4 has-text-left-tablet">{this.props.jobTitle}</p>
+          <p className="card-header-title is-small">{this.props.employerName}</p>
         </div>
         <div className="card-content">
-          <div className="subtitle is-6">Salary: {this.props.minimumSalary} {this.props.currency} - {this.props.maximumSalary} {this.props.currency}</div>
-          <div className="subtitle is-6">Apply before: {this.props.expirationDate}</div>
-          <div className="content is-small">{this.props.jobDescription}</div>
+          <p className="subtitle is-6"> <span className="has-text-weight-semibold">Location:</span> {this.props.locationName}</p>
+          <p className="subtitle is-6"><span className="has-text-weight-semibold">Salary:</span> {this.props.minimumSalary} {this.props.currency} - {this.props.maximumSalary} {this.props.currency}</p>
+          <p className="subtitle is-6"><span className="has-text-weight-semibold">Apply before:</span> {this.props.expirationDate}</p>
+          <p className="content is-small">{this.props.jobDescription}</p>
         </div>
       </div>
     )
-
   }
 }
 export default Card
