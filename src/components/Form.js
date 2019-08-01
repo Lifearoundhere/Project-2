@@ -21,6 +21,8 @@ class Form extends React.Component {
     this.props.history.push(`/results/${keyword}/${location}`)
   }
 
+
+
   render() {
     return (
       <section className="section">

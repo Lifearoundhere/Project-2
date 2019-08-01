@@ -12,9 +12,14 @@ class Results extends React.Component {
 
   componentDidMount() {
     const key = 'K7HAXKBZLB3XYVDES2VN'
-    axios.get('https://cors-anywhere.herokuapp.com/https://www.eventbriteapi.com/v3/events/search?location.address=vancovuer&location.within=10km&expand=venue', {
+    axios.get('https://cors-anywhere.herokuapp.com/https://www.eventbriteapi.com/v3/events/search?', {
       params: {
-        token: key
+        token: key,
+        'location.address': 'London',
+        'location.within': '10km',
+        expand: 'venue',
+        categories: '101,102'
+
       },
       headers: { Authorization: `Bearer ${key}` }
     })
