@@ -8,14 +8,22 @@ class IndexPage extends React.Component {
     super()
 
     this.state = {
-      data: []
+      data: [],
+      searchStr: '',
+      sorting: 'date|desc'
+
     }
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSort = this.handleSort.bind(this)
   }
   componentDidMount() {
-    const cors = 'https://cors-anywhere.herokuapp.com/'
     const key = 'MjYyZjMwODctYTEwYy00YTdiLTg4NWEtOTNlODQ3MmI0YmE3Og=='
-    const url = cors + 'https://www.reed.co.uk/api/1.0/search?keywords=accountant&location=london&distancefromlocation=15'
-    axios.get(url, {
+    axios.get('https://cors-anywhere.herokuapp.com/https://www.reed.co.uk/api/1.0/search', {
+      params: {
+        keywords: this.props.match.params.keyword,
+        location: this.props.match.params.location,
+        distancefromlocation: 15
+      },
       headers: { Authorization: `Basic ${key}` }
     })
       .then(res => {
@@ -23,26 +31,45 @@ class IndexPage extends React.Component {
       })
       .catch(err => console.log(err))
   }
+  handleChange(e) {
+    this.setState({ searchStr: e.target.value })
+  }
+  handleSort(e) {
+    this.setState({ sorting: e.target.value })
+  }
 
+  filterSearch() {
+    const [field, order] = this.state.sorting.split('|')
+    const regex = new RegExp(this.state.searchStr, 'i')
+    const filterJobs = _.filter(this.state.data, job => {
+      return regex.test(job.jobTitle) || regex.test(job.locationName)
+    })
+    const sortedJobs = _.orderBy(filterJobs, [field], [order])
+    console.log(filterJobs)
+    return sortedJobs
+  }
 
   render() {
-    console.log(this.state.data)
+    console.log(this.state.searchStr)
+    if (!this.state.data) return <div className="button is-loading" ></div>
     return (
       <div>
         <label>
           Search:
-          <input type="text" name="Search" />
+          <input type="text" name="Search"
+            onKeyUp={this.handleChange}
+          />
         </label>
-        <select>
-          <option selected value="A-Z">A-Z</option>
-          <option value="Z-A">Z-A</option>
-          <option value="High-Low">High-Low</option>
-          <option value="Low-High">Low-High</option>
+        <select onChange={this.handleSort}>
+          <option selected value="date|desc">Date|Last - First</option>
+          <option value="date|asc">Date|First - Last</option>
+          <option value="applicantions|desc">NoOfApplicants|High-Low</option>
+          <option value="applicantions|asc">NoOfApplicants|Low-High</option>
         </select>
         <section className="section">
           <div className="container">
             <div className="columns is-multiline">
-              {this.state.data.map(job =>
+              {this.filterSearch().map(job =>
                 <div key={job.jobId} className="column is-full-tablet is-half-desktop">
                   <Card
                     key={job.jobId}
@@ -64,4 +91,4 @@ class IndexPage extends React.Component {
     )
   }
 }
-export default IndexPage 
+export default IndexPage

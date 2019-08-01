@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom'
 import { Link, HashRouter, Switch, Route } from 'react-router-dom'
 import IndexPage from './components/Index'
 import FormPage from './components/Form'
+import ResultsPage from './components/Results'
 
 class App extends React.Component {
 
@@ -13,6 +14,7 @@ class App extends React.Component {
     return (
       <HashRouter>
         <Switch>
+          <Route exact path='/results/:keyword/:location' component={IndexPage} />
           <Route exact path='/search' component={IndexPage} />
           <Route path='/' component={FormPage} />
         </Switch>

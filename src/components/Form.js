@@ -6,14 +6,21 @@ class Form extends React.Component {
     super()
     this.state = {
       formData: {},
-      errors: ''
     }
     this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
   handleChange(e) {
     const formData = { ...this.state.formData, [e.target.name]: e.target.value }
-    this.setState({ formData, error: '' })
+    this.setState({ formData })
   }
+
+  handleSubmit(e) {
+    e.preventDefault()
+    const { keyword, location } = this.state.formData
+    this.props.history.push(`/results/${keyword}/${location}`)
+  }
+
   render() {
     return (
       <section className="section">
@@ -30,7 +37,6 @@ class Form extends React.Component {
                   onChange={this.handleChange}
                 />
               </div>
-              {this.state.errors.keyword && <small className="help is-danger">{this.state.errors.keyword}</small>}
             </div>
             <div className="field">
               <label className="label">Location</label>
@@ -43,7 +49,6 @@ class Form extends React.Component {
                   onChange={this.handleChange}
                 />
               </div>
-              {this.state.errors.location && <small className="help is-danger">{this.state.errors.location}</small>}
             </div>
             <button className="button is-primary">Search</button>
           </form>
