@@ -2,6 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
 import Card from './components/Card'
+import Input from './components/Input'
+
 
 
 class App extends React.Component {
@@ -31,6 +33,7 @@ class App extends React.Component {
       <main>
 
         <h1>hello World</h1>
+        <Input />
         {this.state.data.map(job =>
           <div key={job.jobId}>
             <Card
