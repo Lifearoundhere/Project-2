@@ -38,6 +38,10 @@ class IndexPage extends React.Component {
   handleSort(e) {
     this.setState({ sorting: e.target.value })
   }
+  openInNewTab(url) {
+    var win = window.open(url, '_blank');
+    win.focus();
+  }
 
   filterSearch() {
     const [field, order] = this.state.sorting.split('|')
@@ -71,20 +75,22 @@ class IndexPage extends React.Component {
           <div className="container">
             <div className="columns is-multiline">
               {this.filterSearch().map(job =>
-                <a href={`//${job.jobUrl}`} target="_blank" key={job.jobId}>
-                  <div className="column is-full-tablet is-half-desktop">
-                    <Card
-                      key={job.jobId}
-                      jobTitle={job.jobTitle}
-                      employerName={job.employerName}
-                      locationName={job.locationName}
-                      minimumSalary={job.minimumSalary}
-                      maximumSalary={job.maximumSalary}
-                      currency={job.currency}
-                      expirationDate={job.expirationDate}
-                      jobDescription={job.jobDescription}
-                    />
-                  </div>
+                <a href={job.jobUrl} target="_blank" key={job.jobId}
+                  className="column is-full-tablet is-half-desktop"
+                >
+
+                  <Card
+                    key={job.jobId}
+                    jobTitle={job.jobTitle}
+                    employerName={job.employerName}
+                    locationName={job.locationName}
+                    minimumSalary={job.minimumSalary}
+                    maximumSalary={job.maximumSalary}
+                    currency={job.currency}
+                    expirationDate={job.expirationDate}
+                    jobDescription={job.jobDescription}
+                  />
+
                 </a>
               )}
             </div>
