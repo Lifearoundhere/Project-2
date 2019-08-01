@@ -2,7 +2,7 @@ import React from 'react'
 import Card from './Card'
 import _ from 'lodash'
 import axios from 'axios'
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom"
 
 class IndexPage extends React.Component {
   constructor() {
@@ -38,10 +38,6 @@ class IndexPage extends React.Component {
   handleSort(e) {
     this.setState({ sorting: e.target.value })
   }
-  openInNewTab(url) {
-    var win = window.open(url, '_blank');
-    win.focus();
-  }
 
   filterSearch() {
     const [field, order] = this.state.sorting.split('|')
@@ -75,7 +71,7 @@ class IndexPage extends React.Component {
           <div className="container">
             <div className="columns is-multiline">
               {this.filterSearch().map(job =>
-                <a href={job.jobUrl} target="_blank" key={job.jobId}
+                <a href={job.jobUrl} target="_blank" rel="noopener noreferrer" key={job.jobId}
                   className="column is-full-tablet is-half-desktop"
                 >
 

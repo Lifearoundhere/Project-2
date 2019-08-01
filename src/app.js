@@ -16,6 +16,7 @@ class App extends React.Component {
         <Switch>
           <Route exact path='/results/:keyword/:location' component={IndexPage} />
           <Route exact path='/search' component={IndexPage} />
+          <Route path='/test' component={ResultsPage} />
           <Route path='/' component={FormPage} />
         </Switch>
       </HashRouter>

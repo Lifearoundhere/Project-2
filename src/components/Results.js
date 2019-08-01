@@ -11,17 +11,15 @@ class Results extends React.Component {
   }
 
   componentDidMount() {
-    const key = 'MjYyZjMwODctYTEwYy00YTdiLTg4NWEtOTNlODQ3MmI0YmE3Og=='
-    axios.get('https://cors-anywhere.herokuapp.com/https://www.reed.co.uk/api/1.0/search', {
+    const key = 'K7HAXKBZLB3XYVDES2VN'
+    axios.get('https://cors-anywhere.herokuapp.com/https://www.eventbriteapi.com/v3/events/search?location.address=vancovuer&location.within=10km&expand=venue', {
       params: {
-        keywords: this.props.match.params.keyword,
-        location: this.props.match.params.location,
-        distancefromlocation: 15
+        token: key
       },
-      headers: { Authorization: `Basic ${key}` }
+      headers: { Authorization: `Bearer ${key}` }
     })
       .then(res => {
-        this.setState({ data: res.data.results })
+        this.setState({ results: res.data.events })
       })
       .catch(err => console.log(err))
   }
@@ -30,7 +28,9 @@ class Results extends React.Component {
     return (
       <section className="section">
         <div className="container">
-
+          {this.state.results.map(event =>
+            <h1 key={event.id}>{event.name.text}</h1>
+          )}
         </div>
       </section>
     )
