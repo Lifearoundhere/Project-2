@@ -3,6 +3,8 @@ import axios from 'axios'
 import Card from './Card'
 import CardEvent from './CardEvent'
 import _ from 'lodash'
+import { Link } from 'react-router-dom'
+
 
 
 class Results extends React.Component {
@@ -10,22 +12,35 @@ class Results extends React.Component {
     super()
     this.state = {
       results: [],
-      data: []
+      data: [],
+      searchStr: '',
+      sorting: 'date|desc'
     }
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSort = this.handleSort.bind(this)
   }
 
   sortOutMyResults(newResults, index) {
     const oldResults = this.state.data
     if (index === 'isB') {
       newResults.map(obj => obj.isB = true)
+      newResults.map(obj => obj.newName = obj.name.html)
+      newResults.map(obj => obj.Date = obj.start.local)
     }
     // oldResults.concat(newResults)
     console.log(newResults)
     this.setState({ data: [...oldResults, ...[...newResults]] })
   }
 
+  handleChange(e) {
+    this.setState({ searchStr: e.target.value })
+  }
+  handleSort(e) {
+    this.setState({ sorting: e.target.value })
+  }
+
   fetchReed() {
-    const key = 'MjYyZjMwODctYTEwYy00YTdiLTg4NWEtOTNlODQ3MmI0YmE3Og=='
+    const key = process.env.REED_KEY
     axios.get('https://cors-anywhere.herokuapp.com/https://www.reed.co.uk/api/1.0/search', {
       params: {
         keywords: this.props.match.params.keyword,
@@ -43,11 +58,11 @@ class Results extends React.Component {
   }
 
   fetchEventbrite() {
-    const key = 'K7HAXKBZLB3XYVDES2VN'
+    const key = process.env.EVENT_BITE_KEY
     axios.get('https://cors-anywhere.herokuapp.com/https://www.eventbriteapi.com/v3/events/search?', {
       params: {
         token: key,
-        'location.address': 'London',
+        'location.address': this.props.match.params.location,
         'location.within': '10km',
         expand: 'venue',
         categories: '101,102'
@@ -68,45 +83,60 @@ class Results extends React.Component {
     this.fetchEventbrite()
   }
 
-  // filterSearch() {
-  //   const [field, order] = this.state.sorting.split('|')
-  //   const regex = new RegExp(this.state.searchStr, 'i')
-  //   const filterJobs = _.filter(this.state.data, job => {
-  //     return regex.test(job.jobTitle) || regex.test(job.locationName)
-  //   })
-  //   const sortedJobs = _.orderBy(filterJobs, [field], [order])
-  //   console.log(filterJobs)
-  //   return sortedJobs
-  // }
+  filterSearch() {
+    const [field, order] = this.state.sorting.split('|')
+    const regex = new RegExp(this.state.searchStr, 'i')
+    const filterJobs = _.filter(this.state.data, job => {
+      return regex.test(job.jobTitle) || regex.test(job.locationName) || regex.test(job.newName) || regex.test(job.isB)
+    })
+    const sortedJobs = _.orderBy(filterJobs, [field], [order])
+    console.log(filterJobs)
+    return sortedJobs
+  }
 
   render() {
-    console.log(this.state.results)
+    console.log(this.filterSearch())
     if (!this.state.data) return <div className="button is-loading" ></div>
     return (
-      <div>
-        <label>
-          Search:
-          <input type="text" name="Search"
-            onKeyUp={this.handleChange}
-          />
-        </label>
-        <select onChange={this.handleSort}>
-          <option selected value="date|desc">Date|Last - First</option>
-          <option value="date|asc">Date|First - Last</option>
-          <option value="applicantions|desc">NoOfApplicants|High-Low</option>
-          <option value="applicantions|asc">NoOfApplicants|Low-High</option>
-        </select>
+      <div className="container-1">
+        <div className="field has-addon is-grouped is-grouped-centered">
+          <form>
+            <div className="field">
+              <label className="label is-size-4">Search:</label>
+              <div className="control">
+                <input
+                  className="input is-medium"
+                  type="text"
+                  name="Search"
+                  placeholder="keyword"
+                  onChange={this.handleChange}
+                />
+              </div>
+              <div className="field">
+                <select className="label is-size-4" onChange={this.handleSort}>
+                  <option selected value="date|desc">Date | Last - First</option>
+                  <option value="date|asc">Date | First - Last</option>
+                  <option value="applicantions|desc">No. of Applicants | High-Low</option>
+                  <option value="applicantions|asc">No. of Applicants | Low-High</option>
+                </select>
+              </div>
+            </div>
+            <div className="is-centered">
+              <Link to="/" className="button is-link is-large">New Search</Link>
+            </div>
+          </form>
+        </div>
         <section className="section">
           <div className="container">
             <div className="columns is-multiline">
-              {this.state.data.map(job => {
+              {this.filterSearch().map(job => {
                 if (job.isB) {
                   return (
                     <a href={job.url} target="_blank" rel="noopener noreferrer" key={job.Id}
-                      className="column is-full-tablet is-half-desktop"
+                      className="column is-half-tablet is-one-third-desktop"
                     >
                       <CardEvent
-                        name={job.name.text}
+                        name={job.newName}
                         EventImage={job.logo.original.url}
                         eventDate={job.start.local}
                       />
@@ -115,7 +145,7 @@ class Results extends React.Component {
                 } else {
                   return (
                     <a href={job.jobUrl} target="_blank" rel="noopener noreferrer" key={job.jobId}
-                      className="column is-full-tablet is-half-desktop"
+                      className="column is-half-tablet is-one-third-desktop"
                     >
 
                       <Card

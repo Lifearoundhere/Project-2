@@ -2,8 +2,8 @@ import React from 'react'
 
 
 class Form extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       formData: {},
     }
@@ -29,10 +29,10 @@ class Form extends React.Component {
         <div className="container">
           <form onSubmit={this.handleSubmit}>
             <div className="field">
-              <label className="label">Keyword</label>
+              <label className="label is-size-3">Keyword</label>
               <div className="control">
                 <input
-                  className="input"
+                  className="input is-medium"
                   type="text"
                   name="keyword"
                   placeholder="eg: accountant"
@@ -41,10 +41,10 @@ class Form extends React.Component {
               </div>
             </div>
             <div className="field">
-              <label className="label">Location</label>
+              <label className="label is-size-3">Location</label>
               <div className="control">
                 <input
-                  className="input"
+                  className="input is-medium"
                   type="text"
                   name="location"
                   placeholder="eg: London"
@@ -52,7 +52,9 @@ class Form extends React.Component {
                 />
               </div>
             </div>
-            <button className="button is-primary">Search</button>
+            <div className="is-centered">
+              <button className="button is-link is-large">Search</button>
+            </div>
           </form>
         </div>
       </section>
