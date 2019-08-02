@@ -1,5 +1,8 @@
 import React from 'react'
 import axios from 'axios'
+import Card from './Card'
+import CardEvent from './CardEvent'
+import _ from 'lodash'
 
 
 class Results extends React.Component {
@@ -27,7 +30,7 @@ class Results extends React.Component {
       params: {
         keywords: this.props.match.params.keyword,
         location: this.props.match.params.location,
-        distancefromlocation: 15
+        distancefromlocation: 10
       },
       headers: { Authorization: `Basic ${key}` }
     })
@@ -65,16 +68,76 @@ class Results extends React.Component {
     this.fetchEventbrite()
   }
 
+  // filterSearch() {
+  //   const [field, order] = this.state.sorting.split('|')
+  //   const regex = new RegExp(this.state.searchStr, 'i')
+  //   const filterJobs = _.filter(this.state.data, job => {
+  //     return regex.test(job.jobTitle) || regex.test(job.locationName)
+  //   })
+  //   const sortedJobs = _.orderBy(filterJobs, [field], [order])
+  //   console.log(filterJobs)
+  //   return sortedJobs
+  // }
+
   render() {
     console.log(this.state.results)
+    if (!this.state.data) return <div className="button is-loading" ></div>
     return (
-      <section className="section">
-        <div className="container">
-          {/* {this.state.results.map(event =>
-            <h1 key={event.id}>{event.name.text}</h1>
-          )} */}
-        </div>
-      </section>
+      <div>
+        <label>
+          Search:
+          <input type="text" name="Search"
+            onKeyUp={this.handleChange}
+          />
+        </label>
+        <select onChange={this.handleSort}>
+          <option selected value="date|desc">Date|Last - First</option>
+          <option value="date|asc">Date|First - Last</option>
+          <option value="applicantions|desc">NoOfApplicants|High-Low</option>
+          <option value="applicantions|asc">NoOfApplicants|Low-High</option>
+        </select>
+        <section className="section">
+          <div className="container">
+            <div className="columns is-multiline">
+              {this.state.data.map(job => {
+                if (job.isB) {
+                  return (
+                    <a href={job.url} target="_blank" rel="noopener noreferrer" key={job.Id}
+                      className="column is-full-tablet is-half-desktop"
+                    >
+                      <CardEvent
+                        name={job.name.text}
+                        EventImage={job.logo.original.url}
+                        eventDate={job.start.local}
+                      />
+                    </a>
+                  )
+                } else {
+                  return (
+                    <a href={job.jobUrl} target="_blank" rel="noopener noreferrer" key={job.jobId}
+                      className="column is-full-tablet is-half-desktop"
+                    >
+
+                      <Card
+                        key={job.jobId}
+                        jobTitle={job.jobTitle}
+                        employerName={job.employerName}
+                        locationName={job.locationName}
+                        minimumSalary={job.minimumSalary}
+                        maximumSalary={job.maximumSalary}
+                        currency={job.currency}
+                        expirationDate={job.expirationDate}
+                        jobDescription={job.jobDescription}
+                      />
+
+                    </a>
+                  )
+                }
+              })}
+            </div>
+          </div>
+        </section>
+      </div>
     )
   }
 }
