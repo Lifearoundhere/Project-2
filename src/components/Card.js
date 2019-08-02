@@ -7,6 +7,10 @@ class Card extends
     this.state = {
       data: {}
     }
+    this.convertDate = this.convertDate.bind(this)
+  }
+  convertDate() {
+    return new Date(this.props.date).toDateString()
   }
   render() {
     return (
@@ -18,7 +22,7 @@ class Card extends
         <div className="card-content">
           <p className="subtitle is-6"> <span className="has-text-weight-semibold">Location:</span> {this.props.locationName}</p>
           <p className="subtitle is-6"><span className="has-text-weight-semibold">Salary:</span> {this.props.minimumSalary} {this.props.currency} - {this.props.maximumSalary} {this.props.currency}</p>
-          <p className="subtitle is-6"><span className="has-text-weight-semibold">Apply before:</span> {this.props.expirationDate}</p>
+          <p className="subtitle is-6"><span className="has-text-weight-semibold">Date:</span> {this.props.date}</p>
           <p className="content is-small">{this.props.jobDescription}</p>
         </div>
       </div>

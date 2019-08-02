@@ -25,7 +25,7 @@ class Results extends React.Component {
     if (index === 'isB') {
       newResults.map(obj => obj.isB = true)
       newResults.map(obj => obj.newName = obj.name.html)
-      newResults.map(obj => obj.Date = obj.start.local)
+      newResults.map(obj => obj.date = (new Date(obj.start.local)).toDateString())
     }
     // oldResults.concat(newResults)
     console.log(newResults)
@@ -90,29 +90,39 @@ class Results extends React.Component {
       return regex.test(job.jobTitle) || regex.test(job.locationName) || regex.test(job.newName) || regex.test(job.isB)
     })
     const sortedJobs = _.orderBy(filterJobs, [field], [order])
-    console.log(filterJobs)
-    return sortedJobs
+
+    // const mix = []
+    // const startOfB = 100
+    // for (let i = 0; i < 50; i++) {
+    //   mix.push(sortedJobs[i], sortedJobs[i + startOfB])
+    // }
+
+    // console.log(startOfB)
+    // console.log(mix)
+
+    return _.shuffle(sortedJobs)
   }
+
 
   render() {
     console.log(this.filterSearch())
     if (!this.state.data) return <div className="button is-loading" ></div>
     return (
       <div className="container-1">
-        <div className="field has-addon is-grouped is-grouped-centered">
+        <div className="field columns is-centered">
           <form>
-            <div className="field">
+            <div className="column field block">
               <label className="label is-size-4">Search:</label>
-              <div className="control">
+              <div>
                 <input
-                  className="input is-medium"
+                  className="input is-medium is-hovered"
                   type="text"
                   name="Search"
                   placeholder="keyword"
                   onChange={this.handleChange}
                 />
               </div>
-              <div className="field">
+              <div className="column field">
                 <select className="label is-size-4" onChange={this.handleSort}>
                   <option selected value="date|desc">Date | Last - First</option>
                   <option value="date|asc">Date | First - Last</option>
@@ -138,7 +148,7 @@ class Results extends React.Component {
                       <CardEvent
                         name={job.newName}
                         EventImage={job.logo.original.url}
-                        eventDate={job.start.local}
+                        eventDate={job.date}
                       />
                     </a>
                   )
@@ -156,7 +166,7 @@ class Results extends React.Component {
                         minimumSalary={job.minimumSalary}
                         maximumSalary={job.maximumSalary}
                         currency={job.currency}
-                        expirationDate={job.expirationDate}
+                        date={job.date}
                         jobDescription={job.jobDescription}
                       />
 
