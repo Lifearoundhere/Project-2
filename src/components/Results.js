@@ -91,15 +91,6 @@ class Results extends React.Component {
     })
     const sortedJobs = _.orderBy(filterJobs, [field], [order])
 
-    // const mix = []
-    // const startOfB = 100
-    // for (let i = 0; i < 50; i++) {
-    //   mix.push(sortedJobs[i], sortedJobs[i + startOfB])
-    // }
-
-    // console.log(startOfB)
-    // console.log(mix)
-
     return _.shuffle(sortedJobs)
   }
 
@@ -109,9 +100,10 @@ class Results extends React.Component {
     if (!this.state.data) return <div className="button is-loading" ></div>
     return (
       <div className="container-1">
+
         <div className="field columns is-centered">
           <form>
-            <div className="column field block">
+            <div className="column field">
               <label className="label is-size-4">Search:</label>
               <div>
                 <input

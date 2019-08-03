@@ -18,7 +18,7 @@ class IndexPage extends React.Component {
     this.handleSort = this.handleSort.bind(this)
   }
   componentDidMount() {
-    const key = 'MjYyZjMwODctYTEwYy00YTdiLTg4NWEtOTNlODQ3MmI0YmE3Og=='
+    const key = process.env.REED_KEY
     axios.get('https://cors-anywhere.herokuapp.com/https://www.reed.co.uk/api/1.0/search', {
       params: {
         keywords: this.props.match.params.keyword,
