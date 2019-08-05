@@ -6,13 +6,14 @@ import FormPage from './components/Form'
 import ResultsPage from './components/Results'
 import './style.scss'
 
+import Image from '../src/assets/El Camello - Banner.png'
 class App extends React.Component {
 
   render() {
     return (
       <HashRouter>
         <figure className="image">
-          <img src="../../assets/El Camello - Banner.png" alt={this.props.EventName} />
+          <img src={Image} alt={this.props.EventName} />
         </figure>
         <Switch>
           <Route exact path='/results/:keyword/:location' component={ResultsPage} />

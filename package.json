@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "serve": "webpack-dev-server --mode=development"
+    "serve": "webpack-dev-server --mode=development",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "repository": {
     "type": "git",
@@ -45,6 +46,8 @@
   "devDependencies": {
     "babel-eslint": "^10.0.2",
     "eslint": "^6.1.0",
-    "eslint-plugin-react": "^7.14.3"
+    "eslint-plugin-react": "^7.14.3",
+    "file-loader": "^4.1.0",
+    "gh-pages": "^2.0.1"
   }
 }
