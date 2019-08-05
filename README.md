@@ -2,6 +2,8 @@
 
 React Hackathon for SEI London
 
+[Link to project](https://lifearoundhere.github.io/Project-2/#/)
+
 **Timeframe**: 2 day Pair Programming
 
 Notable Technologies/Libarys used:
